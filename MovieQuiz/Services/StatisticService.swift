@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 final class StatisticService: StatisticServiceProtocol {
     private let storage: UserDefaults = .standard
     
@@ -11,6 +9,8 @@ final class StatisticService: StatisticServiceProtocol {
         case gamesCount
         case total
         case date
+        case totalCorrect
+        case totalTotal
     }
     var gamesCount: Int {
         get {
@@ -36,22 +36,21 @@ final class StatisticService: StatisticServiceProtocol {
     }
     
     var totalAccuracy: Double {
-        let correct = storage.double(forKey: Keys.correct.rawValue)
-        let total = storage.double(forKey: Keys.total.rawValue)
+        let correct = storage.double(forKey: Keys.totalCorrect.rawValue)
+        let total = storage.double(forKey: Keys.totalTotal.rawValue)
         guard total != 0 else { return 0 }
         return (correct / total) * 100
     }
     
     func store(correct count: Int, total amount: Int) {
         let newGameResult = GameResult(correct: count, total: amount, date: Date())
-        let currentCorrect = storage.integer(forKey: Keys.correct.rawValue)
-        let currentTotal = storage.integer(forKey: Keys.total.rawValue)
-        storage.set(currentCorrect + count, forKey: Keys.correct.rawValue)
-        storage.set(currentTotal + amount, forKey: Keys.total.rawValue)
-        
         if newGameResult.isBetterThan(bestGame) {
             bestGame = newGameResult
         }
+        let currentCorrect = storage.integer(forKey: Keys.totalCorrect.rawValue)
+        let currentTotal = storage.integer(forKey: Keys.totalTotal.rawValue)
+        storage.set(currentCorrect + count, forKey: Keys.totalCorrect.rawValue)
+        storage.set(currentTotal + amount, forKey: Keys.totalTotal.rawValue)
         gamesCount += 1
     }
 }
