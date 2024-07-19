@@ -1,6 +1,3 @@
-// Здравствуйте , Вы указали , что есть пустые файлы MovieQuiz/Presentation/Untitled.swift и MovieQuiz/Services/Untitled.swift и их нужно удалить , но я их уже удалил и у меня они не отображаются , может быть они остались в кэше , подскажите пожалуйста как их и оттуда удалить . Буду благодарен спасибо !)
-
-
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
@@ -82,7 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             "Поздравляем, вы ответили на 10/10!":
             "Ваш результат: \(correctAnswers)/10"
             let gamesCount = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-            let bestGame = "Рекорд: \(statisticService.bestGame.correct) из \(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+            let bestGame = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
             let averageAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             let finalText = "\(text)\n\(gamesCount)\n\(bestGame)\n\(averageAccuracy)"
             let viewModel = QuizResultsViewModel(
