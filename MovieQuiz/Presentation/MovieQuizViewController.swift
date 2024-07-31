@@ -2,6 +2,15 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+    //MARK: - IB Outlets
+    
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
@@ -29,9 +38,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var statisticService: StatisticServiceProtocol!
+    private var alertPresenter: AlertPresenter?
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    
+    //MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let moviesLoader = MoviesLoader()
+        let questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
+        self.questionFactory = questionFactory
+        questionFactory.requestNextQuestion()
+        statisticService = StatisticService()
+        showLoadingIndicator()
+        questionFactory.loadData()
+        alertPresenter = AlertPresenter()
+        activityIndicator.hidesWhenStopped = true
+    }
     
     // MARK: - Private functions
     
@@ -113,18 +138,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
             })
-        let alertPresenter = AlertPresenter()
-        alertPresenter.show(from: self, with: alertModel)
+        alertPresenter?.show(from: self, with: alertModel)
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
     private func hideLoadingIndicator() {
         activityIndicator.stopAnimating()
-        activityIndicator.isHidden = true
     }
     
     private func showNetworkError(message: String) {
@@ -140,33 +162,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
             self.questionFactory?.requestNextQuestion()
         }
-        let alertPresenter = AlertPresenter()
-        alertPresenter.show(from: self, with: model)
+        alertPresenter?.show(from: self, with: model)
     }
-    
-    
-    
-    //MARK: - Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let moviesLoader = MoviesLoader()
-        let questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
-        self.questionFactory = questionFactory
-        questionFactory.requestNextQuestion()
-        statisticService = StatisticService()
-        showLoadingIndicator()
-        questionFactory.loadData()
-    }
-    
-    //MARK: - IB Outlets
-    
-    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet private weak var textLabel: UILabel!
-    @IBOutlet private weak var counterLabel: UILabel!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var yesButton: UIButton!
-    @IBOutlet private weak var noButton: UIButton!
     
     //MARK: - QuestionFactoryDelegate
     

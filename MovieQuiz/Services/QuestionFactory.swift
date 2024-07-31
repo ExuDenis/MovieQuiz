@@ -2,8 +2,8 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     
-    private let moviesLoader: MoviesLoading
-    private var delegate: QuestionFactoryDelegate?
+    private weak var moviesLoader: (MoviesLoading)?
+    private weak var delegate: QuestionFactoryDelegate?
     private var movies: [MostPopularMovie] = []
     
 
@@ -56,7 +56,7 @@ class QuestionFactory: QuestionFactoryProtocol {
  */
     
     func loadData() {
-        moviesLoader.loadMovies { [weak self] (result: Result<MostPopularMovies, Error>) in
+        moviesLoader?.loadMovies { [weak self] (result: Result<MostPopularMovies, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 switch result {
@@ -89,8 +89,12 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             let rating = Float(movie.rating) ?? 0
             
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
+            let comparisonOperators = ["больше", "меньше"]
+            let randomOperator = comparisonOperators.randomElement() ?? "больше"
+            let randomRatingValue = Int.random(in: 5...9)
+            
+            let text = "Рейтинг этого фильма \(randomOperator) чем \(randomRatingValue)?"
+            let correctAnswer = randomOperator == "больше" ? Int(rating) > randomRatingValue : Int(rating) < randomRatingValue
             let question = QuizQuestion(image: .data(imageData),
                                          text: text,
                                          correctAnswer: correctAnswer)

@@ -1,8 +1,5 @@
 import Foundation
 
-protocol MoviesLoading {
-    func loadMovies(completion handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
-}
 final class MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
     private let networkClient = NetworkClient()
