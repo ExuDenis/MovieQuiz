@@ -2,7 +2,7 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     
-    private weak var moviesLoader: (MoviesLoading)?
+    private let moviesLoader: MoviesLoading
     private weak var delegate: QuestionFactoryDelegate?
     private var movies: [MostPopularMovie] = []
     
@@ -56,7 +56,7 @@ class QuestionFactory: QuestionFactoryProtocol {
  */
     
     func loadData() {
-        moviesLoader?.loadMovies { [weak self] (result: Result<MostPopularMovies, Error>) in
+        moviesLoader.loadMovies { [weak self] (result: Result<MostPopularMovies, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 switch result {

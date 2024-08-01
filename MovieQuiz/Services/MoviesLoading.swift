@@ -1,5 +1,5 @@
 import Foundation
 
-protocol MoviesLoading: AnyObject {
+protocol MoviesLoading {
     func loadMovies(completion handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
