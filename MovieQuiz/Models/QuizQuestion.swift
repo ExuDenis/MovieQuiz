@@ -1,7 +1,12 @@
 import Foundation
 
 struct QuizQuestion {
-    let image: String
+    let image: ImageType
     let text: String
     let correctAnswer: Bool
+}
+
+enum ImageType {
+    case string(String)
+    case data(Data)
 }
