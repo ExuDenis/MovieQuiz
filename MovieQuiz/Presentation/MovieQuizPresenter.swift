@@ -14,6 +14,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     var statisticService: StatisticServiceProtocol!
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewControllerProtocol?
+    var alertPresenter = AlertPresenter()
     
     init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
@@ -99,7 +100,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func proceedToNextQuestionOrResults() {
+    private func proceedToNextQuestionOrResults() {
         if isLastQuestion() {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             let text = correctAnswers == questionsAmount ?
@@ -125,10 +126,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     //MARK: - QuestionFactoryDelegate
-    
-    // func didReceiveNextQuestion(question: QuizQuestion?) {
-    //     presenter.didReceiveNextQuestion(question: question)
-    // }
     
     func didLoadDataFromServer() {
         viewController?.hideActivityIndicator() // скрываем индикатор загрузки

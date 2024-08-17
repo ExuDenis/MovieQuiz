@@ -14,8 +14,8 @@ final class AlertPresenter {
         }
         
         alert.addAction(action)
+        alert.accessibilityLabel = "Game results" // Устанавливаем accessibilityLabel для алерта
         
-        
-       viewController.present(alert, animated: true, completion: nil)
+        viewController.present(alert, animated: true, completion: nil)
     }
 }

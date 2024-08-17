@@ -43,7 +43,6 @@ final class MovieQuizUITests: XCTestCase {
         let secondPosterData = secondPoster.screenshot().pngRepresentation
         
         let indexLabel = app.staticTexts["Index"]
-        indexLabel.label
         
         XCTAssertEqual(indexLabel.label, "2/10")
         XCTAssertNotEqual(firstPosterData, secondPosterData) // проверяем, что постеры разные
@@ -62,7 +61,6 @@ final class MovieQuizUITests: XCTestCase {
         let secondPosterData = secondPoster.screenshot().pngRepresentation
         
         let indexLabel = app.staticTexts["Index"]
-        indexLabel.label
         
         XCTAssertEqual(indexLabel.label, "2/10")
         XCTAssertNotEqual(firstPosterData, secondPosterData)
@@ -75,7 +73,7 @@ final class MovieQuizUITests: XCTestCase {
             sleep(2)
         }
 
-        let alert = app.alerts["Game results"]
+        let alert = app.alerts.element
         
         XCTAssertTrue(alert.exists)
         XCTAssertTrue(alert.label == "Этот раунд окончен!")
@@ -89,9 +87,8 @@ final class MovieQuizUITests: XCTestCase {
             sleep(2)
         }
         
-        let alert = app.alerts["Game results"]
+        let alert = app.alerts.element
         alert.buttons.firstMatch.tap()
-        
         sleep(2)
         
         let indexLabel = app.staticTexts["Index"]
